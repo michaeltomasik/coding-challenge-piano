@@ -7,6 +7,10 @@ class Key extends React.Component {
   }
   
   playAudio(note) {
+    // Allows double click of the same key
+    this.sound.pause();
+    this.sound.currentTime = 0;
+
     this.sound.play();
     this.props.addNote(note);
   }
