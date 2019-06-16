@@ -10,3 +10,7 @@
   margin: 1px;
   cursor: pointer;
 }
+
+.Key-active {
+  background: blue;
+}

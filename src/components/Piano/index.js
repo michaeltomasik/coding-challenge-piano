@@ -6,32 +6,29 @@ class Piano extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      playedNotes: [],
-    };
-
-    this.addNote = this.addNote.bind(this);
+    this.keyRef = React.createRef();
   }
 
-  addNote(note) {
-    console.log(note);
-    this.setState({
-      playedNotes: [...this.state.playedNotes, note],
-    });
-  }
+  play(notes) {
+    console.log(this.props.playedNotes);
+    notes.forEach((note, index) => {
+      console.log(note);
+      const time = 200*index;
+      setTimeout(() => {
+        this.keyRef.current.onClickHandler(note);
+      }, time);
+    })
+  };
 
   render() {
-    const { pianoNotes } = this.props;
+    const { pianoNotes, addNote } = this.props;
 
     return (
-      <>
-        <div className="Piano">
-          {pianoNotes.map(note =>
-            <Key note={note} addNote={this.addNote} />
-          )}
-        </div>
-        <div>Played Notes: [{this.state.playedNotes.join(', ')}]</div>
-      </>
+      <div className="Piano">
+        {pianoNotes.map(note =>
+          <Key key={note} ref={this.keyRef} note={note} addNote={addNote} />
+        )}
+      </div>
     );
   }
 }

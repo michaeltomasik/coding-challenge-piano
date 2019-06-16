@@ -4,14 +4,28 @@ import './Key.css';
 class Key extends React.Component {
   constructor(props){
     super(props);
+
+    this.state = {
+      active: '',
+    }
   }
   
-  playAudio(note) {
+  onClickHandler(note, showClicked=false) {
     // Allows double click of the same key
-    this.sound.pause();
-    this.sound.currentTime = 0;
+    if (showClicked) {
+      this.setState({ active: note });
+      setTimeout(() => {
+        this.setState({
+          active: '',
+        })
+      }, 100);
+    }
 
-    this.sound.play();
+    var audio = new Audio();
+    audio.src = `/assets/grand-piano-mp3-sounds/${note}.mp3`;
+
+    audio.play();
+    
     this.props.addNote(note);
   }
 
@@ -19,12 +33,9 @@ class Key extends React.Component {
     const { note } = this.props;
 
     return (
-      <div className="Key" onClick={() => {this.playAudio(note)}}>
+      <div className={`Key ${this.state.active === note ? 'Key-active' : ''}`}
+        onClick={() => { this.onClickHandler(note, true); }}>
         <div className="Key-note">{note}</div>
-        <audio ref={(sound) => { this.sound = sound; }}>
-          <source src={`/assets/grand-piano-mp3-sounds/${note}.mp3`} type="audio/mpeg" >
-          </source>
-        </audio>
       </div>
     );
   }
