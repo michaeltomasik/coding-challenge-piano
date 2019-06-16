@@ -33,9 +33,10 @@ class Key extends React.Component {
     const { note } = this.props;
 
     return (
-      <div className={`Key ${this.state.active === note ? 'Key-active' : ''}`}
+      <div className={`${note.length === 2 ? 'Key-white' : 'Key-black' }
+        ${this.state.active === note ? 'Key-active' : ''}`}
         onClick={() => { this.onClickHandler(note, true); }}>
-        <div className="Key-note">{note}</div>
+        <div className="Key-note">{note.length === 2 ? note : ''}</div>
       </div>
     );
   }

@@ -1,4 +1,4 @@
-.Key {
+.Key-white {
   width: 50px;
   height: 200px;
   background: white;
@@ -8,6 +8,21 @@
   align-items: flex-end;
   justify-content: center;
   margin: 1px;
+  cursor: pointer;
+}
+
+.Key-black {
+  width: 25px;
+  height: 100px;
+  position: relative;
+  background: black;
+  border: solid 1px black;
+  vertical-align: bottom;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  margin: 1px -13px;
+  z-index: 2;
   cursor: pointer;
 }
 

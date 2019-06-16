@@ -12,9 +12,13 @@ class SongList extends React.Component {
 
     return (
       <div className="SongList">
+        <div className="SongList-header">Song titles</div>
         {songs.map((song, index) =>
-          <div key={song.title+index} onClick={() => { playSong(song); }}>
-            {index+1}. Title: {song.title}
+          <div
+            className="SongList-title"
+            key={song.title+index}
+            onClick={() => { playSong(song); }}>
+            {index+1}. {song.title}
           </div>
         )}
       </div>

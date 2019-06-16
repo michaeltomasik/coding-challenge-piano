@@ -61,21 +61,23 @@ class App extends React.Component {
 
   render() {
     const { playedNotes, isRecordMode, showPopup, songs } = this.state;
-    const pianoNotes = ['C1', 'D1', 'E1', 'F1', 'G1', 'A1', 'B1'];
-    console.log(this.state);
+    const pianoNotes = ['C4', 'Db4', 'D4', 'Eb4', 'E4', 'F4', 'Gb4', 'G4', 'Ab4', 'A4', 'Bb4', 'B4', 'C5'];
+
     return (
       <div className="App">
-        <Piano
-          ref={this.pianoRef}
-          playedNotes={playedNotes}
-          pianoNotes={pianoNotes}
-          addNote={this.addNote} />
-        <div>Played Notes: [{playedNotes.join(', ')}]</div>
-        <div onClick={this.switchRecordMode}>
-          {isRecordMode ?
-            <div>STOP</div> :
-            <div>PLAY</div>}
+        <div>
+          <Piano
+            ref={this.pianoRef}
+            playedNotes={playedNotes}
+            pianoNotes={pianoNotes}
+            addNote={this.addNote} />
+          <button onClick={this.switchRecordMode}>
+            {isRecordMode ?
+              <div>STOP</div> :
+              <div>Start Recording</div>}
+          </button>
         </div>
+        <div>Played Notes: [{playedNotes.join(', ')}]</div>
         <SongList songs={songs} playSong={this.playSong} />
         <Modal
           isOpen={showPopup}
