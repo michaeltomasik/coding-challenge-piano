@@ -12,6 +12,7 @@ import * as serviceWorker from './serviceWorker';
 
 const cache = new InMemoryCache();
 const link = new HttpLink({
+  // uri: 'http://localhost:4000/',
   uri: 'https://backend-piano.herokuapp.com/',
 })
 

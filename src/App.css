@@ -1,6 +1,32 @@
 .App {
   text-align: center;
   padding: 20px 50px;
+  margin: auto;
+  max-width: 800px;
   background: white;
   display: flex;
+}
+
+.App-piano-container {
+  height: 50vh;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: space-between;
+}
+
+.play {
+  border-top: 10px solid white;
+  border-bottom: 10px solid white;
+  border-left: 20px solid black;
+  height: 0px;
+}
+
+.record {
+  margin: 2px;
+  height: 25px;
+  width: 25px;
+  background-color: red;
+  border-radius: 50%;
+  display: inline-block;
+  cursor: pointer;
 }

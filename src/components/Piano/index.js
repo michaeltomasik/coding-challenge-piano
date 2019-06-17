@@ -10,10 +10,11 @@ class Piano extends React.Component {
   }
 
   play(notes) {
-    notes.forEach((note, index) => {
-      const time = 200*index;
+    notes.forEach((noteObj, index) => {
+      const time = noteObj.time;
+      console.log(time);
       setTimeout(() => {
-        this.keyRef.current.onClickHandler(note);
+        this.keyRef.current.onClickHandler(noteObj.note);
       }, time);
     })
   };

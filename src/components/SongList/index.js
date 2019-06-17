@@ -2,11 +2,6 @@ import React from 'react';
 import './SongList.css';
 
 class SongList extends React.Component {
-  constructor(props) {
-    super(props);
-    
-  }
-
   render() {
     const { songs, playSong } = this.props;
 

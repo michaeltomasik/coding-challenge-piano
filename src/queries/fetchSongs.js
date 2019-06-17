@@ -4,7 +4,10 @@ export default gql`
   {
     songs {
       title,
-      keysPlayed
+      keysPlayed {
+        note
+        time
+      }
     }
   }
 `;

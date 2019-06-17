@@ -1,8 +1,6 @@
 import React from 'react';
-import gql from "graphql-tag";
 import { graphql } from 'react-apollo';
 
-import logo from './logo.svg';
 import Piano from './components/Piano';
 import Modal from './components/Modal';
 import SongList from './components/SongList';
@@ -19,7 +17,7 @@ class App extends React.Component {
       playedNotes: [],
       isRecordMode: false,
       showPopup: false,
-      songs: props.data.songs// [{ title: 'TEST', keysPlayed: ['A1', 'B1'], }],
+      startSongDate: null,
     };
 
     this.pianoRef = React.createRef();
@@ -32,8 +30,15 @@ class App extends React.Component {
 
   addNote(note) {
     if (this.state.isRecordMode) {
+      const noteObj = {
+        note,
+        time: this.state.playedNotes[0] ?
+          (new Date() - this.state.startSongDate).toFixed(2) : 0,
+      };
       this.setState({
-        playedNotes: [...this.state.playedNotes, note],
+        startSongDate:
+          this.state.playedNotes[0] ? this.state.startSongDate : new Date(),
+        playedNotes: [...this.state.playedNotes, noteObj],
       });
     }
   }
@@ -58,27 +63,30 @@ class App extends React.Component {
   }
 
   render() {
-    const { playedNotes, isRecordMode, showPopup, songs } = this.state;
+    const { playedNotes, isRecordMode, showPopup } = this.state;
     const pianoNotes = ['C4', 'Db4', 'D4', 'Eb4', 'E4', 'F4', 'Gb4', 'G4', 'Ab4', 'A4', 'Bb4', 'B4', 'C5'];
 
     return (
       <div className="App">
-        <div>
+        {this.props.data.loading ? 'Loading...' :
+          <SongList songs={this.props.data.songs || []} playSong={this.playSong} />
+        }
+        <div className="App-piano-container">
           <Piano
             ref={this.pianoRef}
             playedNotes={playedNotes}
             pianoNotes={pianoNotes}
             addNote={this.addNote} />
-          <button onClick={this.switchRecordMode}>
-            {isRecordMode ?
-              <div>STOP</div> :
-              <div>Start Recording</div>}
-          </button>
+            <div>
+              <div
+                onClick={this.switchRecordMode}
+                className="record"></div>
+              {isRecordMode ?
+                'Stop Recording' :
+                'Start Recording'}
+            </div>
         </div>
-        <div>Played Notes: [{playedNotes.join(', ')}]</div>
-        {this.props.data.loading ? 'Loading...' :
-          <SongList songs={this.props.data.songs || []} playSong={this.playSong} />
-        }
+        {/* <div>Played Notes: [{playedNotes.join(', ')}]</div> */}
         <Modal
           isOpen={showPopup}
           closeModal={this.closeModal}

@@ -46,10 +46,13 @@ class Modal extends React.Component {
 }
 
 const mutation = gql`
-  mutation addSong($title: String, $keysPlayed: [String]) {
+  mutation addSong($title: String, $keysPlayed: [NoteInput]) {
     addSong(title: $title, keysPlayed: $keysPlayed){
-      title,
-      keysPlayed,
+      title
+      keysPlayed {
+        note
+        time
+      }
     }
   }
 `
