@@ -1,8 +1,14 @@
 import React from 'react';
+import gql from "graphql-tag";
+import { graphql } from 'react-apollo';
+
 import logo from './logo.svg';
 import Piano from './components/Piano';
 import Modal from './components/Modal';
 import SongList from './components/SongList';
+
+import fetchSongQuery from './queries/fetchSongs';
+
 import './App.css';
 
 class App extends React.Component {
@@ -13,14 +19,14 @@ class App extends React.Component {
       playedNotes: [],
       isRecordMode: false,
       showPopup: false,
-      songs: [{ title: 'TEST', notes: ['A1', 'B1'], }],
+      songs: props.data.songs// [{ title: 'TEST', keysPlayed: ['A1', 'B1'], }],
     };
 
     this.pianoRef = React.createRef();
 
     this.addNote = this.addNote.bind(this);
     this.switchRecordMode = this.switchRecordMode.bind(this);
-    this.saveSong = this.saveSong.bind(this);
+    this.closeModal = this.closeModal.bind(this);
     this.playSong = this.playSong.bind(this);
   }
 
@@ -33,12 +39,6 @@ class App extends React.Component {
   }
 
   switchRecordMode() {
-    // let additionalChanges = {}
-    // if (this.state.isRecordMode) {
-    //   additionalChanges = {
-    //     showPopup: true,
-    //   }
-    // }
     this.setState({
       isRecordMode: !this.state.isRecordMode,
       showPopup: this.state.isRecordMode,
@@ -46,16 +46,14 @@ class App extends React.Component {
   }
 
   playSong(song) {
-    this.pianoRef.current.play(song.notes);
+    if (!this.state.isRecordMode) {
+      this.pianoRef.current.play(song.keysPlayed);
+    }
   }
 
-  saveSong(title) {
+  closeModal() {
     this.setState({
       showPopup: false,
-      songs: [
-        ...this.state.songs,
-        { title, notes: this.state.playedNotes }
-      ],
     });
   }
 
@@ -78,13 +76,16 @@ class App extends React.Component {
           </button>
         </div>
         <div>Played Notes: [{playedNotes.join(', ')}]</div>
-        <SongList songs={songs} playSong={this.playSong} />
+        {this.props.data.loading ? 'Loading...' :
+          <SongList songs={this.props.data.songs || []} playSong={this.playSong} />
+        }
         <Modal
           isOpen={showPopup}
-          saveSong={this.saveSong} />
+          closeModal={this.closeModal}
+          playedNotes={playedNotes} />
       </div>
     );
   }
 }
 
-export default App;
+export default graphql(fetchSongQuery)(App);

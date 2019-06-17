@@ -1,4 +1,9 @@
 import React from 'react';
+import gql from "graphql-tag";
+import { graphql } from 'react-apollo';
+
+import fetchSongQuery from '../../queries/fetchSongs';
+
 import './Modal.css';
 
 class Modal extends React.Component {
@@ -15,7 +20,7 @@ class Modal extends React.Component {
   }
 
   render() {
-    const { isOpen, saveSong } = this.props;
+    const { isOpen, closeModal, playedNotes, mutate } = this.props;
 
     return isOpen ? (
       <div className="Modal">
@@ -24,7 +29,15 @@ class Modal extends React.Component {
           <input onChange={(e) => this.changeTitle(e.target.value)} />
           <button
             onClick={() => {
-              saveSong(this.state.title);
+              mutate({
+                variables: {
+                  title: this.state.title,
+                  keysPlayed: playedNotes,
+                },
+                refetchQueries: [{ query: fetchSongQuery }]
+              }).then((res) => {
+                closeModal();
+              });
             }}>Save</button>
         </div>
       </div>
@@ -32,4 +45,13 @@ class Modal extends React.Component {
   }
 }
 
-export default Modal;
+const mutation = gql`
+  mutation addSong($title: String, $keysPlayed: [String]) {
+    addSong(title: $title, keysPlayed: $keysPlayed){
+      title,
+      keysPlayed,
+    }
+  }
+`
+
+export default graphql(mutation)(Modal);
