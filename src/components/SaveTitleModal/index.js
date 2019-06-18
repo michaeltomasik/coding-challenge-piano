@@ -1,12 +1,13 @@
 import React from 'react';
 import gql from "graphql-tag";
 import { graphql } from 'react-apollo';
+import { Modal, Button, FormControl } from 'react-bootstrap';
 
 import fetchSongQuery from '../../queries/fetchSongs';
 
-import './Modal.css';
+import './SaveTitleModal.css';
 
-class Modal extends React.Component {
+class SaveTitleModal extends React.Component {
   constructor(props) {
     super(props);
 
@@ -22,12 +23,21 @@ class Modal extends React.Component {
   render() {
     const { isOpen, closeModal, playedNotes, mutate } = this.props;
 
-    return isOpen ? (
-      <div className="Modal">
-        <div className="Modal-content">
-          Title
-          <input onChange={(e) => this.changeTitle(e.target.value)} />
-          <button
+    return (
+      <Modal show={isOpen}>
+        <Modal.Header>
+          <Modal.Title>Title</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <FormControl
+            placeholder="Song title example"
+            className="Modal-input"
+            onChange={(e) => this.changeTitle(e.target.value)} />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            disabled={!this.state.title}
+            variant="primary"
             onClick={() => {
               mutate({
                 variables: {
@@ -38,10 +48,12 @@ class Modal extends React.Component {
               }).then((res) => {
                 closeModal();
               });
-            }}>Save</button>
-        </div>
-      </div>
-    ) : null;
+            }}>
+            Save
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    );
   }
 }
 
@@ -57,4 +69,4 @@ const mutation = gql`
   }
 `
 
-export default graphql(mutation)(Modal);
+export default graphql(mutation)(SaveTitleModal);
