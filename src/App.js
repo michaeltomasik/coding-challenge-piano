@@ -1,11 +1,11 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
-import { Jumbotron, Button } from 'react-bootstrap';
 import Joyride from 'react-joyride';
 
 import Piano from './components/Piano';
 import SaveTitleModal from './components/SaveTitleModal';
 import SongList from './components/SongList';
+import PianoJubotron from './components/PianoJubotron';
 
 import fetchSongQuery from './queries/fetchSongs';
 
@@ -52,6 +52,7 @@ class App extends React.Component {
     this.closeModal = this.closeModal.bind(this);
     this.playSong = this.playSong.bind(this);
     this.handleJoyrideCallback = this.handleJoyrideCallback.bind(this);
+    this.openTutorial = this.openTutorial.bind(this);
   }
 
   addNote(note) {
@@ -100,6 +101,9 @@ class App extends React.Component {
     }
   };
 
+  openTutorial() {
+    this.setState({ showTutorial: true });
+  }
   
   render() {
     const { playedNotes, isRecordMode, showPopup, steps, showTutorial } = this.state;
@@ -107,21 +111,7 @@ class App extends React.Component {
 
     return (
       <>
-        <Jumbotron>
-          <div className="App-Jumbotron-content">
-            <h1>Piano App</h1>
-            <p>This is a simple piano app that allows you to record your songs and save them in database.</p>
-            <p>Technologies: React, Graphql, Nodejs, Mongodb</p>
-            <p><b><a href='https://github.com/michaeltomasik/coding-challenge-piano'>Source Code</a></b></p>
-            <p>
-              <Button
-                variant="primary"
-                onClick={() => {
-                  this.setState({ showTutorial: true })
-                }}>How to use it?</Button>
-            </p>
-          </div>
-        </Jumbotron>
+        <PianoJubotron openTutorial={this.openTutorial} />
         <div className="App">
           {this.props.data.loading ? 'Loading...' :
             <SongList songs={this.props.data.songs || []} playSong={this.playSong} />
@@ -155,6 +145,7 @@ class App extends React.Component {
             callback={this.handleJoyrideCallback}
             showSkipButton
             continuous
+            showProgress
             scrollToFirstStep />
           <SaveTitleModal
             isOpen={showPopup}
