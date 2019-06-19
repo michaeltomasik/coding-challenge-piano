@@ -88,7 +88,7 @@ class App extends React.Component {
     });
   }
 
-  handleJoyrideCallback = data => {
+  handleJoyrideCallback(data) {
     const { joyride } = this.props;
 
     if (joyride && typeof joyride.callback === "function") {
@@ -100,6 +100,7 @@ class App extends React.Component {
     }
   };
 
+  
   render() {
     const { playedNotes, isRecordMode, showPopup, steps, showTutorial } = this.state;
     const pianoNotes = ['C4', 'Db4', 'D4', 'Eb4', 'E4', 'F4', 'Gb4', 'G4', 'Ab4', 'A4', 'Bb4', 'B4', 'C5'];
@@ -111,6 +112,7 @@ class App extends React.Component {
             <h1>Piano App</h1>
             <p>This is a simple piano app that allows you to record your songs and save them in database.</p>
             <p>Technologies: React, Graphql, Nodejs, Mongodb</p>
+            <p><b><a href='https://github.com/michaeltomasik/coding-challenge-piano'>Source Code</a></b></p>
             <p>
               <Button
                 variant="primary"
