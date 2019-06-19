@@ -18,7 +18,7 @@ class Key extends React.Component {
         this.setState({
           active: '',
         })
-      }, 100);
+      }, 500);
     }
 
     var audio = new Audio();
@@ -36,7 +36,10 @@ class Key extends React.Component {
       <div className={`${note.length === 2 ? 'Key-white' : 'Key-black' }
         ${this.state.active === note ? 'Key-active' : ''}`}
         onClick={() => { this.onClickHandler(note, true); }}>
-        <div className="Key-note">{note.length === 2 ? note : ''}</div>
+        <div
+          className={`Key-note
+          ${this.state.active === note ? 'Key-note-active' : ''}`}>
+            {note}</div>
       </div>
     );
   }
